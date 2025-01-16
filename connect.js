@@ -1,25 +1,25 @@
-// Exercise 2.1
 require('dotenv').config();
-// Exercise 2.2
-// Exercise 2.3
+
+const mongoose = require('mongoose');
+const atlasMongooseURI = process.env.ATLAS_MONGOOSE_URI;
+const databaseName = process.env.DATABASE_NAME;
 
 let mongooseConnection = null;
 
 async function connectMongoose() {
     try {
-        null; // Ex. 2.4 (replace null with the correct code)
+        await mongoose.connect(atlasMongooseURI, { dbName: databaseName });
 
         mongooseConnection = mongoose.connection;
-        mongooseConnection.on('error', (e)=>console.error(e));
-        mongooseConnection.on('SIGINT', ()=>autoDisconnect(mongooseConnection, 'app'));
-        mongooseConnection.on('SIGHUP', ()=>autoDisconnect(mongooseConnection, 'terminal'));
-        mongooseConnection.on('SIGTERM', ()=>autoDisconnect(mongooseConnection, 'system'));
-        console.log("Connected to database.")
-    }
-    catch (e) {
+        mongooseConnection.on('error', (e) => console.error(e));
+        mongooseConnection.on('SIGINT', () => autoDisconnect(mongooseConnection, 'app'));
+        mongooseConnection.on('SIGHUP', () => autoDisconnect(mongooseConnection, 'terminal'));
+        mongooseConnection.on('SIGTERM', () => autoDisconnect(mongooseConnection, 'system'));
+        console.log("Connected to database.");
+    } catch (e) {
         console.error(e);
         if (mongooseConnection !== null) {
-            mongooseConnection.close(()=>autoDisconnect(mongooseConnection, 'error-based'));
+            mongooseConnection.close(() => autoDisconnect(mongooseConnection, 'error-based'));
             mongooseConnection = null;
         }
     }
@@ -31,4 +31,4 @@ async function connectMongoose() {
     }
 }
 
-// Exercise 2.5 module.exports = {  }; 
+module.exports = { connectMongoose };
