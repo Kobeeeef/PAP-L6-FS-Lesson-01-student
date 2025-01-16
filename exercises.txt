@@ -1,0 +1,138 @@
+Get Prepared
+1. Install dependencies. Open a terminal from the cloned folder, then run:
+npm install
+ 
+2. Reactivate database. Navigate to Atlas, https://www.mongodb.com/
+Check that your Messages database is still active, if not, reactivate it.
+
+______________________________________________
+Exercise 1: Create environment variables
+
+1. To get the values for the database variables, navigate to https://www.mongodb.com/
+On the Overview page, Click the connect button
+2. Follow the slides or your instructor's demonstration to get the connection values you need for Mongoose
+3. Install Mongoose. Open a terminal from the cloned folder and run:
+npm install mongoose
+4. Create a .env file in the root of the cloned folder: 
+.env
+*** If you have not done so, add .env to your local or global .gitignore file
+5. In .env, create environment variables for:
+MONGOOSE_CONN
+DB_NAME
+DB_COLL_NAME
+PORT = 3002
+
+Use all caps for environment variable names
+Do not put string values in quotes
+
+*** In the connection string, make sure to replace <password> with your MongoDB password.
+MONGOOSE_CONN = connection_string
+You can find your password in the connection string we used in Level 5.
+Or, go to Atlas, in the left menu, click: Database access
+Edit your user, and create a new password
+
+___________________________________________________________
+Exercise 2: Connect to the database using Mongoose
+
+In connect.js:
+1. At the top of the file, create a constant: mongoose 
+set its value by using require to import the Mongoose module
+2. After the line that imports .env, create another constant: atlasMongooseURI 
+set its value to the associated environment variable
+3. Create a constant: databaseName
+set its value to the associated environment variable
+4. Inside function connectMongoose(), inside try, run the Mongoose .connect() method on the imported Mongoose module and pass it: 
+atlasMongooseURI, { dbName: databaseName }
+5. Export the connectMongoose function 
+
+In index.js:
+6. Edit the connectMongoDB constant to import the connectMongoose function instead:
+const { connectMongoose } = require('./connect');
+7. Inside function start(), edit the function call connectMongoDB(), instead call:
+connectMongoose()
+8. Open a terminal and run: npm start
+
+___________________________________________________________
+Exercise 3: Create a Schema to describe what a Message is in our application, the data we need to save. 
+
+1. Inside the "models" folder, create a new file:
+Message.js
+Inside Message.js, 
+2. Require .env config()
+3. Create a constant: collectionName
+sets its value to the associated environment variable
+4. Create a constant variable: 
+{ Schema, model } 
+sets its value by using require to import from the Mongoose module
+5. Call the Schema class to create a new Schema:
+messageSchema
+6. Create 4 key value pairs with the following SchemaTypes:
+   message: String
+   user: String
+   date: Date
+   secret: Boolean
+7. Create a new constant: Message
+Set its value by calling the model() function and passing it:
+'Message', messageSchema, collectionName
+
+8. Export Message as a module
+
+The app won't work yet, but you should have no errors in the terminal. 
+
+___________________________________________________________
+Exercise 4: Refactoring the database queries to use the Mongoose Model
+
+In read-messages.js:
+1. Remove the GetCollection import statement, instead use require to import the Message model from Message.js. Assign it a constant: Message
+2. Inside getAllMessages(), delete the line that assigns the variable db to getCollection()
+3. Inside try, edit the find query to run on Message, delete toArray(), and chain .exec() to the end.
+4. Inside catch, after the line that logs an error, return an empty array.
+
+___________________________________________________________
+Practice Session
+
+Use Mongoose to execute the remainder of the CRUD operations.
+We'll be editing the following files in the models folder:
+create-message.js
+update-message.js
+delete-message.js
+
+Exercise 1: Create a new message
+In create-message.js:
+1. Edit the { getCollection } import statement to instead get the Message model from connect.js
+Name the constant: Message
+Inside createNewMessage():
+2. Delete the line that runs getCollection(), we don't need it.
+3. Inside try, use create() instead of insertOne(). Edit db.insertOne() to:
+Message.create  
+leave the argument and all other code as is.
+4. Open the app with Live Server and use the form to test creating a new message.
+
+Exercise 2: Update a message
+We no longer need to import MongoDB methods or run other code to format the id of a message.
+In update-message.js:
+1. Edit the { getCollection } import statement to instead get the Message model from connect.js
+Name the constant: Message
+2. Delete the ObjectId constant, we don't need it
+Inside updateMessage():
+3. Delete the line creating the db constant
+4. Delete the line creating the documentId constant
+5. Inside try, edit db.updateOne() to run on Message instead of db
+6. Edit the arguments of .updateOne() to: {_id: messageId}, messageUpdate
+(We no longer need $set because we have the Message model.)
+7. Open the app with Live Server and test by trying to edit a new message.
+
+Exercise 3: Delete a message
+We no longer need to import MongoDB methods or run other code to format the id of a message.
+In delete-message.js:
+1. Edit the { getCollection } import statement to instead get the Message model from connect.js
+Name the constant: Message
+2. Delete the ObjectId constant, we don't need it
+Inside updateMessage():
+3. Delete the line creating the db constant
+4. Delete the line creating the documentId constant
+5. Inside try, edit db.deleteOne() to run on Message instead of db
+6. Edit the argument of .deleteOne() to: _id: messageId
+7. Open the app with Live Server and test by trying to delete a new message.
+
+Before you submit, test out each function of the app and make sure it's working.

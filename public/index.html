@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secret Message</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <header>
+        <nav id="branding">
+            <img id="logo" src="./secret-messages-logo.png" alt="Secret Messages App">
+            <h1 id="title">Secret Messages</h1>
+        </nav>
+    </header>
+    <main>
+        <section id="messages">
+            <button id="show-secret">Show secret messages</button>
+            <div class="messages-container"></div>
+        </section>
+        <aside>
+            <h2>Send a Message</h2>
+            <form>
+                <label for="user">Your Name</label>
+                <input id="user" type="text" name="user">
+                <label for="message">Your message</label>
+                <textarea id="message" type="text" name="message"></textarea>
+                <label>Is this a secret message?</label>
+                <input type="radio" id="yes" name="secret" value="true"><label for="yes">Yes</label>
+                <input type="radio" id="no" name="secret" value="false" checked><label for="no">No</label>
+                <input type="submit" value="Send" id="form-btn">
+            </form>
+        </aside>
+    </main>
+    <footer>
+        <p>&copy; 2024 Secret Messages</p>
+    </footer>
+    <script src="./script.js"></script>
+</body>
+
+</html>
